@@ -8,6 +8,8 @@
 
 class UCapsuleComponent;
 
+class USkeletalMeshComponent;
+
 UCLASS()
 class RPG_1_API ABird : public APawn
 {
@@ -30,4 +32,7 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* Capsule;
+
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* BirdMesh;
 };
