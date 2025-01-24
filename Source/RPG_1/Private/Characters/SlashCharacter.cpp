@@ -18,6 +18,8 @@ void ASlashCharacter::BeginPlay()
 	
 }
 
+
+
 // Called every frame
 void ASlashCharacter::Tick(float DeltaTime)
 {
@@ -30,5 +32,14 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ASlashCharacter::MoveForward);
 }
 
+void ASlashCharacter::MoveForward(float Value)
+{
+	if (Controller && (Value != 0.f))
+	{
+		FVector Forward = GetActorForwardVector();
+		AddMovementInput(Forward, Value);
+	}
+}
