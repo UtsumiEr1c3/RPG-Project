@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UGroomComponent;
 
 UCLASS()
 class RPG_1_API ASlashCharacter : public ACharacter
@@ -35,9 +36,15 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* CameraBoom;
+		USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* ViewCamera;
+		UCameraComponent* ViewCamera;
+
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+		UGroomComponent* Hair;
+
+	UPROPERTY(VisibleAnywhere, Category = Hair)
+		UGroomComponent* Eyebrows;
 
 };
