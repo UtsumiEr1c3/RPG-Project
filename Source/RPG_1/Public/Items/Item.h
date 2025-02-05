@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class RPG_1_API AItem : public AActor
 {
@@ -23,27 +25,35 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-	float Amplitude;
+		float Amplitude;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-	float TimeConstant;
+		float TimeConstant;
 
 	UFUNCTION(BlueprintPure)
-	float TransformedSin();
+		float TransformedSin();
 
 	UFUNCTION(BlueprintPure)
-	float TransformedCosine();
+		float TransformedCosine();
 
 	template<typename T>
-	T Avg(T First, T Second);
+		T Avg(T First, T Second);
 
+	UFUNCTION()
+	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float RunningTime;
+		float RunningTime;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* ItemMesh;
+		UStaticMeshComponent* ItemMesh;
+
+	UPROPERTY(VisibleAnywhere)
+		USphereComponent* Sphere;
 };
 
 template<typename T>
