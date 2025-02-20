@@ -12,6 +12,7 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
+class AWeapon;
 
 
 UCLASS()
@@ -49,37 +50,46 @@ protected:
 	void PlayAttackMontage();
 
 	UFUNCTION(BlueprintCallable)
-		void AttackEnd();
+	void AttackEnd();
+	bool CanAttack();
 
-		bool CanAttack();
+	void PlayEquipMontage(FName SectionName);
+	bool CanDisarm();
+	bool CanArm();
 
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-		EActionState ActionState = EActionState::EAS_Unoccupied;
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleAnywhere)
-		USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
-		UCameraComponent* ViewCamera;
+	UCameraComponent* ViewCamera;
 
 	UPROPERTY(VisibleAnywhere, Category = Hair)
-		UGroomComponent* Hair;
+	UGroomComponent* Hair;
 
 	UPROPERTY(VisibleAnywhere, Category = Hair)
-		UGroomComponent* Eyebrows;
+	UGroomComponent* Eyebrows;
 
 	UPROPERTY(VisibleInstanceOnly)
-		AItem* OverlappingItem;
+	AItem* OverlappingItem;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	AWeapon* EquippedWeapon;
 
 	/*
 	* Animation Montages
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
-		UAnimMontage* AttackMontage;
+	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* EquipMontage;
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
