@@ -19,18 +19,18 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
 
 	UPROPERTY(BlueprintReadOnly)
-		class ASlashCharacter* SlashCharacter;
+	class ASlashCharacter* SlashCharacter;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
-		class UCharacterMovementComponent* SlashCharacterMovement;
+	class UCharacterMovementComponent* SlashCharacterMovement;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
-		float GroundSpeed;
+	float GroundSpeed;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
-		bool IsFalling;
+	bool IsFalling;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Movement | Character State")
-		ECharacterState CharacterState;
+	ECharacterState CharacterState;
 
 };

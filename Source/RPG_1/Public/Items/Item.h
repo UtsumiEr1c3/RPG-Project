@@ -8,6 +8,12 @@
 
 class USphereComponent;
 
+enum class EItemState : uint8
+{
+	EIS_Hovering,
+	EIS_Equipped
+};
+
 UCLASS()
 class RPG_1_API AItem : public AActor
 {
@@ -25,36 +31,39 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-		float Amplitude;
+	float Amplitude;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")
-		float TimeConstant;
+	float TimeConstant;
 
 	UFUNCTION(BlueprintPure)
-		float TransformedSin();
+	float TransformedSin();
 
 	UFUNCTION(BlueprintPure)
-		float TransformedCosine();
+	float TransformedCosine();
 
 	template<typename T>
-		T Avg(T First, T Second);
+	T Avg(T First, T Second);
 
 	UFUNCTION()
-		virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-		virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		UStaticMeshComponent* ItemMesh;
+	UStaticMeshComponent* ItemMesh;
+
+	EItemState ItemState = EItemState::EIS_Hovering;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		float RunningTime;
+	float RunningTime;
 
 
 
 	UPROPERTY(VisibleAnywhere)
-		USphereComponent* Sphere;
+	USphereComponent* Sphere;
 };
 
 template<typename T>
