@@ -37,7 +37,13 @@ private:
 	/*
 	* Animation Montages
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UParticleSystem* HitParticles;
 
 };

@@ -82,25 +82,25 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
 
-	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UPROPERTY(VisibleAnywhere, Category = "Hair")
 	UGroomComponent* Hair;
 
-	UPROPERTY(VisibleAnywhere, Category = Hair)
+	UPROPERTY(VisibleAnywhere, Category = "Hair")
 	UGroomComponent* Eyebrows;
 
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	AWeapon* EquippedWeapon;
 
 	/*
 	* Animation Montages
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* AttackMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
 
 public:
