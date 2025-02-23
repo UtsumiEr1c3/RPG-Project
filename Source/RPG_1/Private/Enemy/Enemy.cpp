@@ -54,11 +54,15 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Blue);
-	PlayHitReactMontage(FName("FromLeft"));
 
+	DirectionalHitReact(ImpactPoint);
+}
+
+void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
+{
 	const FVector Forward = GetActorForwardVector();
 	// Lower Impact Point to the Enemy's Actor Location Z
-	const FVector ImpactLower(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);	
+	const FVector ImpactLower(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
 	const FVector ToHit = (ImpactLower - GetActorLocation()).GetSafeNormal();
 
 
@@ -69,6 +73,32 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	double Theta = FMath::Acos(CosTheta);
 	//convert from radians to degrees
 	Theta = FMath::RadiansToDegrees(Theta);
+
+	// if cross product point down, theta should be negative
+	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
+	if (CrossProduct.Z < 0)
+	{
+		Theta = -Theta;
+	}
+
+	FName Section("FromBack");
+
+	if (Theta >= -45.f && Theta < 45.f)
+	{
+		Section = FName("FromFront");
+	}
+	else if (Theta >= -135.f && Theta < -45.f)
+	{
+		Section = FName("FromLeft");
+	}
+	else if (Theta >= 45.f && Theta < 135.f)
+	{
+		Section = FName("FromRight");
+	}
+
+	PlayHitReactMontage(Section);
+
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
 
 	if (GEngine)
 	{
