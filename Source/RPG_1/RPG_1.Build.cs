@@ -8,7 +8,15 @@ public class RPG_1 : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HairStrandsCore", "Niagara", "GeometryCollectionEngine" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore", 
+			"HairStrandsCore", 
+			"Niagara", 
+			"GeometryCollectionEngine"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
