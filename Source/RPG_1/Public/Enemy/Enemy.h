@@ -9,6 +9,8 @@
 
 class UAnimMontage;
 class UAttributeComponent;
+class UHealthBarComponent;
+
 
 UCLASS()
 class RPG_1_API AEnemy : public ACharacter, public IHitInterface
@@ -26,6 +28,8 @@ public:
 
 	void DirectionalHitReact(const FVector& ImpactPoint);
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -37,6 +41,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;
+
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
 
 	/*
 	* Animation Montages

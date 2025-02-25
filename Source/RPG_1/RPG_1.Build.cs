@@ -15,7 +15,8 @@ public class RPG_1 : ModuleRules
 			"InputCore", 
 			"HairStrandsCore", 
 			"Niagara", 
-			"GeometryCollectionEngine"
+			"GeometryCollectionEngine",
+			"UMG"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
