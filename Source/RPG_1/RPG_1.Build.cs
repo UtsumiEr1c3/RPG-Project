@@ -16,7 +16,8 @@ public class RPG_1 : ModuleRules
 			"HairStrandsCore", 
 			"Niagara", 
 			"GeometryCollectionEngine",
-			"UMG"
+			"UMG",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
