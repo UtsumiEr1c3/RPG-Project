@@ -12,6 +12,7 @@ class UAnimMontage;
 class UAttributeComponent;
 class UHealthBarComponent;
 class AAIController;
+class UPawnSensingComponent;
 
 UCLASS()
 class RPG_1_API AEnemy : public ACharacter, public IHitInterface
@@ -36,6 +37,9 @@ protected:
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
 
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn);
+
 	/**
 	* Play montage functions
 	*/
@@ -45,6 +49,13 @@ protected:
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
 
 private:
+
+	/*
+	 * Components
+	 */
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensing;
+
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;
 
@@ -71,8 +82,10 @@ private:
 	AActor* CombatTarget;
 
 	UPROPERTY(EditAnywhere)
-	double CombatRadius = 500;
+	double CombatRadius = 1000;
 
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 150;
 	/*
 	 * Navigation
 	*/
@@ -101,5 +114,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float WaitMax = 10.f;
+
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 };
