@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
 #include "CharacterTypes.h"
 #include "SlashCharacter.generated.h"
 
@@ -12,54 +12,50 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
-class AWeapon;
 
-
+// A class for a character that can equip and use a weapon, as well as perform actions like moving, attacking, and equipping.
 UCLASS()
-class RPG_1_API ASlashCharacter : public ACharacter
+class RPG_1_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	// Constructor to set default values for this character's properties
 	ASlashCharacter();
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	// Setup input bindings for the player
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
-
 protected:
-	// Called when the game starts or when spawned
+	// Initialization when the game starts or the character is spawned
 	virtual void BeginPlay() override;
 
-	/** 
-	* Callbacks for inputs
-	*/
+	// Callbacks for player input (movement, attack, etc.)
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void Turn(float Value);
 	void Lookup(float Value);
-	void EKeyPressed();
-	void Attack();
+	void EKeyPressed(); // Called when the Equip key is pressed
+	virtual void Attack() override;
 
-	/**
-	* Play montage functions
-	*/
-	void PlayAttackMontage();
+	// Function for playing the attack montage
+	virtual void PlayAttackMontage() override;
 
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
-	bool CanAttack();
+	// Ends the attack animation
+	virtual void AttackEnd() override;
 
+	// Check if the character can attack
+	virtual bool CanAttack() override;
+
+	// Functions for equipping and disarming the weapon
 	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm();
 	bool CanArm();
 
+	// Functions for arming and disarming the character
 	UFUNCTION(BlueprintCallable)
 	void Disarm();
 
@@ -70,12 +66,14 @@ protected:
 	void FinishEquipping();
 
 private:
-
+	// State management for the character
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
+	// Action state of the character
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
+	// Components for the camera, hair, and equipped items
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
@@ -88,22 +86,16 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
 	UGroomComponent* Eyebrows;
 
+	// Item the character is currently overlapping
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	AWeapon* EquippedWeapon;
-
-	/*
-	* Animation Montages
-	*/
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* AttackMontage;
-
+	// Montage for equipping the weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
 
 public:
+	// Functions to access private members
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 };
