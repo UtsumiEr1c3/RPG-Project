@@ -41,9 +41,6 @@ protected:
 	void EKeyPressed(); // Called when the Equip key is pressed
 	virtual void Attack() override;
 
-	// Function for playing the attack montage
-	virtual void PlayAttackMontage() override;
-
 	// Ends the attack animation
 	virtual void AttackEnd() override;
 

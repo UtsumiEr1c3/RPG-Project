@@ -45,9 +45,12 @@ protected:
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
 	virtual void Attack() override;
-	virtual void PlayAttackMontage() override;
 	virtual bool CanAttack() override;
 	virtual void HandleDamage(float DamageAmount) override;
+	virtual int32 PlayDeathMontage() override;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float DeathLifeSpan = 5.f;
 
 	// Functions to react when the enemy sees a pawn
 	UFUNCTION()
@@ -65,7 +68,7 @@ protected:
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose;
+	TEnumAsByte<EDeathPose> DeathPose;
 
 private:
 	// Components for enemy sensing and health bar display
