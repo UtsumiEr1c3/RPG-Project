@@ -26,7 +26,6 @@ public:
 	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
 
 protected:
-	// Initialization function
 	virtual void BeginPlay() override;
 
 	// Character attack and death functionality
@@ -37,9 +36,12 @@ protected:
 	virtual void PlayAttackMontage();
 	void PlayHitReactMontage(const FName& SectionName);
 	void DirectionalHitReact(const FVector& ImpactPoint);
+	void PlayHitSound(const FVector& ImpactPoint);
+	void SpawnHitParticles(const FVector& ImpactPoint);
+	virtual void HandleDamage(float DamageAmount);
 
-	// Determines if the character can attack
 	virtual bool CanAttack();
+	bool IsAlive();
 
 	// Function called when attack ends
 	UFUNCTION(BlueprintCallable)
@@ -63,6 +65,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;
 
+private:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundBase* HitSound;
 

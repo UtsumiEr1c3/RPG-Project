@@ -151,6 +151,7 @@ void ASlashCharacter::EKeyPressed()
 // Begin attack if the character is allowed to attack.
 void ASlashCharacter::Attack()
 {
+	Super::Attack();
 	if (CanAttack())
 	{
 		PlayAttackMontage();
@@ -214,6 +215,7 @@ void ASlashCharacter::FinishEquipping()
 // Play the attack animation montage with a random attack section.
 void ASlashCharacter::PlayAttackMontage()
 {
+	Super::PlayAttackMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{
