@@ -54,20 +54,20 @@ private:
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);
 
-	UPROPERTY(EditAnywhere, Category = "Sounds")
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	USoundBase* HitSound;
 
-	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	UParticleSystem* HitParticles;
 
 	// Animation montages for different actions
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* HitReactMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* DeathMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
