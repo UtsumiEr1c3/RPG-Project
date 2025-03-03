@@ -20,20 +20,14 @@ class RPG_1_API ASlashCharacter : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Constructor to set default values for this character's properties
 	ASlashCharacter();
-
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Setup input bindings for the player
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	// Initialization when the game starts or the character is spawned
 	virtual void BeginPlay() override;
 
-	// Callbacks for player input (movement, attack, etc.)
+	/* Callback for inputs */
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void Turn(float Value);
@@ -41,36 +35,28 @@ protected:
 	void EKeyPressed(); // Called when the Equip key is pressed
 	virtual void Attack() override;
 
-	// Ends the attack animation
+	/* Combat */
+	void EquipWeapon(AWeapon* Weapon);
 	virtual void AttackEnd() override;
-
-	// Check if the character can attack
 	virtual bool CanAttack() override;
-
-	// Functions for equipping and disarming the weapon
-	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm();
 	bool CanArm();
+	void Disarm();
+	void Arm();
+	void PlayEquipMontage(const FName& SectionName);
 
 	// Functions for arming and disarming the character
 	UFUNCTION(BlueprintCallable)
-	void Disarm();
+	void AttachWeaponToBack();
 
 	UFUNCTION(BlueprintCallable)
-	void Arm();
+	void AttachWeaponToHand();
 
 	UFUNCTION(BlueprintCallable)
 	void FinishEquipping();
 
 private:
-	// State management for the character
-	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
-
-	// Action state of the character
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EActionState ActionState = EActionState::EAS_Unoccupied;
-
-	// Components for the camera, hair, and equipped items
+	/* Character Components */
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
@@ -83,13 +69,16 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
 	UGroomComponent* Eyebrows;
 
-	// Item the character is currently overlapping
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	// Montage for equipping the weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 public:
 	// Functions to access private members

@@ -15,6 +15,7 @@ ABaseCharacter::ABaseCharacter()
 
 	// Create and assign the attribute component that manages health, stamina, etc.
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 }
 
 void ABaseCharacter::BeginPlay()

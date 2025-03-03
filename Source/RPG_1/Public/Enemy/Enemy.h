@@ -22,90 +22,45 @@ public:
 	// Constructor to set default values
 	AEnemy();
 
-	// Called every frame
+	/* <AActor> */
 	virtual void Tick(float DeltaTime) override;
-
-	// Called when the enemy gets hit
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
-
-	// Function to handle damage taken by the enemy
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
 	virtual void Destroyed() override;
+	/* </AActor> */
+
+	/* <IHitInterface> */
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	/* </IHitInterface> */
+
 
 protected:
+	/* <AActor> */
 	virtual void BeginPlay() override;
-	void StartToPatrol();
+	/* </AActor> */
 
-	// Death functionality and state changes
+	/* <ABaseCharacter> */
 	virtual void Die() override;
-
-	// Functions to patrol and attack
-	bool InTargetRange(AActor* Target, double Radius);
-	void MoveToTarget(AActor* Target);
-	AActor* ChoosePatrolTarget();
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
+	virtual void AttackEnd() override;
 	virtual void HandleDamage(float DamageAmount) override;
 	virtual int32 PlayDeathMontage() override;
+	/* </ABaseCharacter> */
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	float DeathLifeSpan = 5.f;
-
-	// Functions to react when the enemy sees a pawn
-	UFUNCTION()
-	void PawnSeen(APawn* SeenPawn);
-
-	// Targeting and patrol parameters
-	UPROPERTY(EditAnywhere)
-	double CombatRadius = 1000;
-
-	UPROPERTY(EditAnywhere)
-	double AttackRadius = 150;
-
-	// State management for the enemy's behavior
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 	UPROPERTY(BlueprintReadOnly)
 	TEnumAsByte<EDeathPose> DeathPose;
 
+
 private:
-	// Components for enemy sensing and health bar display
-	UPROPERTY(VisibleAnywhere)
-	UPawnSensingComponent* PawnSensing;
-
-	UPROPERTY(VisibleAnywhere)
-	UHealthBarComponent* HealthBarWidget;
-
-	// Enemy weapon
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AWeapon> WeaponClass;
-
-	// Enemy's combat target and AI controller
-	UPROPERTY()
-	AActor* CombatTarget;
-
-	// AI controller and patrol targets
-	UPROPERTY()
-	AAIController* EnemyController;
-	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
-	AActor* PatrolTarget;
-
-	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
-	TArray<AActor*> PatrolTargets;
-
-	// Patrol radius and wait time parameters
-	UPROPERTY(EditAnywhere)
-	double PatrolRadius = 200.f;
-
-	UPROPERTY(EditAnywhere, Category = "AI Navigation")
-	float WaitMin = 5.f;
-
-	UPROPERTY(EditAnywhere, Category = "AI Navigation")
-	float WaitMax = 10.f;
-
-	/* AI Behaviour */
+	/* AI Behavior */
+	void InitializeEnemy();
+	void StartToPatrol();
+	void CheckPatrolTarget();
+	void CheckCombatTarget();
+	void PatrolTimerFinished();
 	void HideHealthBar();
 	void ShowHealthBar();
 	void LoseInterest();
@@ -118,11 +73,60 @@ private:
 	bool IsDead();
 	bool IsEngaged();
 	void ClearPatrolTime();
-
-	/* Combat */
 	void StartAttackTimer();
 	void ClearAttackTimer();
+	bool InTargetRange(AActor* Target, double Radius);
+	void MoveToTarget(AActor* Target);
+	AActor* ChoosePatrolTarget();
+	void SpawnDefaultWeapon();
 
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn); // Call back for OnPawnSeen in UPawnSensingComponent
+
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensing;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AWeapon> WeaponClass;
+
+	UPROPERTY()
+	AActor* CombatTarget;
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 1000;
+
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 150;
+
+	UPROPERTY()
+	AAIController* EnemyController;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	AActor* PatrolTarget;
+
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	TArray<AActor*> PatrolTargets;
+
+	// Patrol radius and wait time parameters
+	UPROPERTY(EditAnywhere)
+	double PatrolRadius = 200.f;
+
+	// Timer to handle patrol behavior
+	FTimerHandle PatrolTimer;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float PatrolWaitMin = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float PatrolWaitMax = 10.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float PatrollingSpeed = 125.f;
+
+	// Timer to handle attack behavior
 	FTimerHandle AttackTimer;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
@@ -132,16 +136,10 @@ private:
 	float AttackMax = 1.5f;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float PatrollingSpeed = 125.f;
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
 	float ChasingSpeed = 300.f;
 
-	// Timer to handle patrol behavior
-	FTimerHandle PatrolTimer;
-	void PatrolTimerFinished();
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float DeathLifeSpan = 5.f;
 
-	// Check and update patrol/target behavior
-	void CheckCombatTarget();
-	void CheckPatrolTarget();
+
 };
